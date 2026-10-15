@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cloudseats
+      POSTGRES_USER: cloudseats
+      POSTGRES_PASSWORD: cloudseats
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cloudseats -d cloudseats"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://cloudseats:cloudseats@postgres:5432/cloudseats
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    restart: on-failure
+    ports:
+      - "3000:8080"
+
+volumes:
+  postgres-data:
