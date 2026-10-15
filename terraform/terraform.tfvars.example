@@ -1,0 +1,4 @@
+aws_region   = "ap-south-1"
+cluster_name = "cloudseats-eks"
+environment  = "dev"
+
