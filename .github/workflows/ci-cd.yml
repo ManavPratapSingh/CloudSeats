@@ -69,24 +69,18 @@ jobs:
           docker build -t ghcr.io/${{ steps.prep.outputs.owner }}/cloudseats-frontend:${{ github.sha }} ./frontend
 
       - name: Security Scan Backend with Trivy
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          image-ref: ghcr.io/${{ steps.prep.outputs.owner }}/cloudseats-backend:${{ github.sha }}
-          scan-type: 'image'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          severity: 'HIGH,CRITICAL'
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest image \
+            --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed \
+            ghcr.io/${{ steps.prep.outputs.owner }}/cloudseats-backend:${{ github.sha }}
 
       - name: Security Scan Frontend with Trivy
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          image-ref: ghcr.io/${{ steps.prep.outputs.owner }}/cloudseats-frontend:${{ github.sha }}
-          scan-type: 'image'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          severity: 'HIGH,CRITICAL'
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest image \
+            --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed \
+            ghcr.io/${{ steps.prep.outputs.owner }}/cloudseats-frontend:${{ github.sha }}
 
       - name: Push images to GHCR
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
