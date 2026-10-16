@@ -1,0 +1,8 @@
+backend:
+  replicas: 2
+
+frontend:
+  replicas: 2
+
+ingress:
+  host: dev.cloudseats.local

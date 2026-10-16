@@ -1,0 +1,46 @@
+backend:
+  image: ghcr.io/manavpratapsingh/cloudseats-backend
+  tag: v1.0.0
+  replicas: 2
+  port: 8000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+frontend:
+  image: ghcr.io/manavpratapsingh/cloudseats-frontend
+  tag: v1.0.0
+  replicas: 2
+  port: 8080
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+postgres:
+  image: postgres:16-alpine
+  db: cloudseats
+  user: cloudseats
+  password: cloudseats
+  storage: 5Gi
+
+ingress:
+  enabled: true
+  className: nginx
+  host: cloudseats.local
+
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+
+serviceMonitor:
+  enabled: true

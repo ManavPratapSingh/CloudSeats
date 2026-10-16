@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cloudseats
+description: Helm chart for CloudSeats SaaS License and Seat Manager
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
