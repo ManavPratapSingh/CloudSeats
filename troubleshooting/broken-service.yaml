@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudseats-broken-service
+  namespace: cloudseats
+spec:
+  selector:
+    app: label-that-does-not-exist
+  ports:
+    - port: 8080
+      targetPort: 8080
