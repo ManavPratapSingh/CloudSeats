@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudseats-grafana-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  cloudseats-dashboard.json: |-
+    {
+      "annotations": { "list": [] },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": null,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "title": "Request Rate (RPS by Handler)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total[1m])) by (handler)",
+              "legendFormat": "{{handler}}"
+            }
+          ]
+        },
+        {
+          "title": "p95 Latency",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, handler))",
+              "legendFormat": "p95 - {{handler}}"
+            }
+          ]
+        },
+        {
+          "title": "HTTP 5xx Error Rate",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total{status=~\"5..\"}[5m]))",
+              "legendFormat": "5xx errors"
+            }
+          ]
+        },
+        {
+          "title": "Business Metric: Total Seats Issued",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+          "targets": [
+            {
+              "expr": "sum(units_issued_total)",
+              "legendFormat": "Seats Issued"
+            }
+          ]
+        }
+      ],
+      "schemaVersion": 38,
+      "style": "dark",
+      "tags": ["cloudseats", "observability"],
+      "time": { "from": "now-15m", "to": "now" },
+      "timepicker": {},
+      "timezone": "",
+      "title": "CloudSeats Application Metrics"
+    }
+
