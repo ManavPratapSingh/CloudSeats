@@ -1,6 +1,6 @@
 # CloudSeats — SaaS License & Seat Management Platform
 
-[![CI/CD Pipeline](https://github.com/ManavPratapSingh/cloudseats-devops-capstone/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ManavPratapSingh/cloudseats-devops-capstone/actions)
+[![CI/CD Pipeline](https://github.com/ManavPratapSingh/CloudSeats/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/ManavPratapSingh/CloudSeats/actions)
 
 **CloudSeats** is a production-grade B2B SaaS platform engineered for DevOps and Platform teams to track, provision, and allocate software subscriptions, cloud licenses, and developer seat quotas across an enterprise.
 
